@@ -1,91 +1,101 @@
-const API_URL = 'https://phydoc-test-2d45590c9688.herokuapp.com';
+document.addEventListener('DOMContentLoaded', () => {
+    const appointmentTypeSelect = document.getElementById('appointment-type');
+    const datesContainer = document.getElementById('dates');
+    const showMoreButton = document.querySelector('.show-more button');
+    const btnNext = document.querySelector('.btn-next');
+    const btnBack = document.querySelector('.btn-back');
+    const alertButton = document.querySelector('.alert button');
 
-// get elements
-const appointmentTypeSelect = document.getElementById('appointment-type');
-const appointmentDateInput = document.getElementById('appointment-date');
-const timeSlotSelect = document.getElementById('time-slot');
-const submitBtn = document.getElementById('submit-btn');
-const userNameInput = document.getElementById('user-name');
-const userContactInput = document.getElementById('user-contact');
-const messageContainer = document.getElementById('message');
+    let scheduleData = []; 
+    let selectedDate = '';  
 
-// fetchin available slots
-async function getAvailableSlots(date, type) {
-    try {
-        const response = await fetch(`${API_URL}/get_schedule?date=${date}&type=${type}`);
-        const data = await response.json();
+    async function fetchSchedule() {
+        try {
+            const response = await fetch('https://phydoc-test-2d45590c9688.herokuapp.com/get_schedule');
+            if (!response.ok) {
+                throw new Error('Failed to fetch schedule');
+            }
+            scheduleData = await response.json();
+            renderDates();
+        } catch (error) {
+            console.error('Error fetching schedule:', error);
+        }
+    }
 
-        // populate the time slots dropdown
-        if (data.available_times && data.available_times.length > 0) {
-            timeSlotSelect.innerHTML = '<option value="">Select a time slot</option>';
-            data.available_times.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeSlotSelect.appendChild(option);
+    function renderDates() {
+        datesContainer.innerHTML = '';  
+
+        scheduleData.forEach(day => {
+            const dateGroup = document.createElement('div');
+            dateGroup.classList.add('date-group');
+            
+            const dateTitle = document.createElement('h2');
+            dateTitle.textContent = day.date;
+            dateGroup.appendChild(dateTitle);
+
+            day.slots.forEach(slot => {
+                const timeSlot = document.createElement('div');
+                timeSlot.classList.add('time-slot');
+                timeSlot.textContent = `${slot.time}\n${slot.price}₸`;
+                timeSlot.addEventListener('click', () => selectTimeSlot(day.date, slot));
+                dateGroup.appendChild(timeSlot);
             });
-        } else {
-            timeSlotSelect.innerHTML = '<option value="">No available slots</option>';
-        }
-    } catch (error) {
-        console.error('Error fetching available slots:', error);
-        showMessage('Error fetching available slots.', 'error');
-    }
-}
 
-// handle appointment form submission
-async function handleBooking() {
-    const type = appointmentTypeSelect.value;
-    const date = appointmentDateInput.value;
-    const time = timeSlotSelect.value;
-    const name = userNameInput.value;
-    const contact = userContactInput.value;
-
-    if (!date || !time || !name || !contact) {
-        showMessage('Please fill in all fields.', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_URL}/appoint`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                type,
-                date,
-                time,
-                name,
-                contact
-            })
+            datesContainer.appendChild(dateGroup);
         });
+    }
 
-        const data = await response.json();
-        if (data.message === 'Appointment created successfully') {
-            showMessage('Appointment booked successfully!', 'success');
-        } else {
-            showMessage('Failed to book appointment. Please try again.', 'error');
+
+    function selectTimeSlot(date, slot) {
+        selectedDate = date;
+        const selectedTime = slot.time;
+        const appointmentType = appointmentTypeSelect.value;
+
+        btnNext.disabled = false;
+
+        btnNext.addEventListener('click', () => bookAppointment(appointmentType, selectedDate, selectedTime));
+    }
+
+    async function bookAppointment(type, date, time) {
+        const appointmentData = {
+            type: type,
+            date: date,
+            time: time
+        };
+
+        try {
+            const response = await fetch('https://phydoc-test-2d45590c9688.herokuapp.com/appoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(appointmentData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to book appointment');
+            }
+
+            const result = await response.json();
+            alert('Appointment booked successfully!');
+            console.log('Appointment Details:', result);
+        } catch (error) {
+            console.error('Error booking appointment:', error);
+            alert('Failed to book appointment');
         }
-    } catch (error) {
-        console.error('Error booking appointment:', error);
-        showMessage('Error booking appointment. Please try again later.', 'error');
     }
-}
 
-// success/error (пан или пропал)
-function showMessage(message, type) {
-    messageContainer.textContent = message;
-    messageContainer.style.color = type === 'success' ? 'green' : 'red';
-}
+    showMoreButton.addEventListener('click', () => {
+        alert('Show more functionality is not implemented yet.');
+    });
 
-// simple event listening
-appointmentDateInput.addEventListener('change', () => {
-    const selectedDate = appointmentDateInput.value;
-    const selectedType = appointmentTypeSelect.value;
-    if (selectedDate && selectedType) {
-        getAvailableSlots(selectedDate, selectedType);
-    }
+    btnBack.addEventListener('click', () => {
+        alert('Going back...');
+    });
+
+    alertButton.addEventListener('click', () => {
+        alert('Here you can find more information about cancellation policies.');
+    });
+
+    fetchSchedule();
 });
-
-submitBtn.addEventListener('click', handleBooking);
