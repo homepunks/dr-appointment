@@ -1,0 +1,99 @@
+/* General Body Styling */
+body {
+    background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%); /* Calming healthcare colors */
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Styling */
+.container {
+    max-width: 600px;
+    margin: 20px auto; /* Centering the form */
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded edges for friendly look */
+}
+
+/* Header */
+h1 {
+    font-size: 28px;
+    color: #4CAF50; /* Medical green for professional touch */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Label Styling */
+label {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Input and Select Fields */
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Input and Select Fields Focus State */
+input:focus, select:focus {
+    border-color: #4CAF50; /* Highlight on focus */
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    background-color: #4CAF50; /* Medical green for call to action */
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+/* Icon Styling */
+i {
+    margin-right: 8px; /* Spacing between icon and text */
+}
+
+/* Small helper text or messages */
+#message {
+    text-align: center;
+    color: #ff5722; /* A warning or success color */
+    margin-top: 10px;
+}
+
+/* Additional Section Styling */
+div {
+    margin-bottom: 20px;
+}
+
+/* Form Inputs with Icons */
+input[type="text"], input[type="date"], select {
+    background-color: #f5f5f5; /* Light grey background for inputs */
+}
+
+/* Background for Message */
+#message {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #fce4ec;
+    border-radius: 5px;
+    color: #d32f2f;
+}

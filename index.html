@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment Booking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-user-md"></i> Book an Appointment</h1>
+
+        <div>
+            <label for="appointment-type"><i class="fas fa-stethoscope"></i> Appointment Type</label>
+            <select id="appointment-type">
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="appointment-date"><i class="fas fa-calendar-alt"></i> Select Date</label>
+            <input type="date" id="appointment-date">
+        </div>
+
+        <div>
+            <label for="time-slot"><i class="fas fa-clock"></i> Select Time Slot</label>
+            <select id="time-slot">
+                <option value="">Select a time slot</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="user-name"><i class="fas fa-user"></i> Your Name</label>
+            <input type="text" id="user-name" placeholder="Enter your name">
+        </div>
+
+        <div>
+            <label for="user-contact"><i class="fas fa-phone"></i> Your Contact</label>
+            <input type="text" id="user-contact" placeholder="Enter your contact">
+        </div>
+
+        <button id="submit-btn">Book Appointment</button>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
